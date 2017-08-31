@@ -77,29 +77,29 @@ yum -y install \
 # Install cvmfs
 yum -y install fuse fuse-libs
 yum -y install wget
-yum -y install osg-oasis
-echo "user_allow_other" > /etc/fuse.conf
-echo "/cvmfs /etc/auto.cvmfs" >> /etc/auto.master
+#yum -y install osg-oasis
+#echo "user_allow_other" > /etc/fuse.conf
+#echo "/cvmfs /etc/auto.cvmfs" >> /etc/auto.master
 
 # Add oasis, cms and configure cvmfs proxy
-cat << EOF > /etc/cvmfs/default.local
-CVMFS_REPOSITORIES="\$(echo \$((echo oasis.opensciencegrid.org;echo cms.cern.ch;ls /cvmfs)|sort -u)|tr ' ' ,)"
-CVMFS_QUOTA_LIMIT=20000
-CVMFS_HTTP_PROXY="http://eddie.crc.nd.edu:3128;http://cmsbproxy.fnal.gov:3128;http://squid.grid.uchicago.edu:3128;http://uct2-cvmfs.mwt2.org:3128;http://iut2-cvmfs.mwt2.org:3128|http://mwt2-cvmfs.campuscluster.illinois.edu:3128;DIRECT"
-EOF
-service autofs restart
+#cat << EOF > /etc/cvmfs/default.local
+#CVMFS_REPOSITORIES="\$(echo \$((echo oasis.opensciencegrid.org;echo cms.cern.ch;ls /cvmfs)|sort -u)|tr ' ' ,)"
+#CVMFS_QUOTA_LIMIT=20000
+#CVMFS_HTTP_PROXY="http://eddie.crc.nd.edu:3128;http://cmsbproxy.fnal.gov:3128;http://squid.grid.uchicago.edu:3128;http://uct2-cvmfs.mwt2.org:3128;http://iut2-cvmfs.mwt2.org:3128|http://mwt2-cvmfs.campuscluster.illinois.edu:3128;DIRECT"
+#EOF
+#service autofs restart
 
 # osg
 # use CA certs from CVMFS    
 yum -y install osg-ca-certs osg-wn-client
-mv /etc/grid-security/certificates /etc/grid-security/certificates.osg-ca-certs
-ln -f -s /cvmfs/oasis.opensciencegrid.org/mis/certificates /etc/grid-security/certificates
+#mv /etc/grid-security/certificates /etc/grid-security/certificates.osg-ca-certs
+#ln -f -s /cvmfs/oasis.opensciencegrid.org/mis/certificates /etc/grid-security/certificates
 
 # htcondor - include so we can chirp
-yum -y install condor
+#yum -y install condor
 
 # pegasus
-yum -y install pegasus
+#yum -y install pegasus
 
 # required directories
 # mkdir -p /cvmfs
