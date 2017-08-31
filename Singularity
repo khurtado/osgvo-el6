@@ -76,6 +76,7 @@ yum -y install \
 
 # Install cvmfs
 yum -y fuse fuse-libs
+yum -y wget
 yum -y install osg-oasis
 echo "user_allow_other" > /etc/fuse.conf
 echo "/cvmfs /etc/auto.cvmfs" >> /etc/auto.master
