@@ -74,6 +74,18 @@ yum -y install \
 	wget \
 	which \
 
+# Install cvmfs
+yum install osg-oasis
+echo "user_allow_other" /etc/fuse.conf
+echo "/cvmfs /etc/auto.cvmfs" >> /etc/auto.master
+
+# Add oasis, cms and configure cvmfs proxy
+cat << EOF > /etc/cvmfs/default.local
+CVMFS_REPOSITORIES="\$(echo \$((echo oasis.opensciencegrid.org;echo cms.cern.ch;ls /cvmfs)|sort -u)|tr ' ' ,)"
+CVMFS_QUOTA_LIMIT=20000
+CVMFS_HTTP_PROXY="http://eddie.crc.nd.edu:3128"
+EOF
+service autofs restart
 
 # osg
 # use CA certs from CVMFS    
@@ -95,17 +107,3 @@ ls -l /etc/grid-security/
 
 # build info
 echo "Timestamp:" `date --utc` | tee /image-build-info.txt
-
-# Install cvmfs
-yum install osg-oasis
-echo "user_allow_other" /etc/fuse.conf
-echo "/cvmfs /etc/auto.cvmfs" >> /etc/auto.master
-
-# Add cms and configure cvmfs proxy
-cat << EOF > /etc/cvmfs/default.local
-CVMFS_REPOSITORIES="\$(echo \$((echo oasis.opensciencegrid.org;echo cms.cern.ch;ls /cvmfs)|sort -u)|tr ' ' ,)"
-CVMFS_QUOTA_LIMIT=20000
-CVMFS_HTTP_PROXY="http://eddie.crc.nd.edu:3128"
-EOF
-
-service autofs restart
