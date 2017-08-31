@@ -75,15 +75,16 @@ yum -y install \
 	which \
 
 # Install cvmfs
-yum install osg-oasis
-echo "user_allow_other" /etc/fuse.conf
+yum -y fuse fuse-libs
+yum -y install osg-oasis
+echo "user_allow_other" > /etc/fuse.conf
 echo "/cvmfs /etc/auto.cvmfs" >> /etc/auto.master
 
 # Add oasis, cms and configure cvmfs proxy
 cat << EOF > /etc/cvmfs/default.local
 CVMFS_REPOSITORIES="\$(echo \$((echo oasis.opensciencegrid.org;echo cms.cern.ch;ls /cvmfs)|sort -u)|tr ' ' ,)"
 CVMFS_QUOTA_LIMIT=20000
-CVMFS_HTTP_PROXY="http://eddie.crc.nd.edu:3128"
+CVMFS_HTTP_PROXY="http://eddie.crc.nd.edu:3128;http://cmsbproxy.fnal.gov:3128;http://squid.grid.uchicago.edu:3128;http://uct2-cvmfs.mwt2.org:3128;http://iut2-cvmfs.mwt2.org:3128|http://mwt2-cvmfs.campuscluster.illinois.edu:3128;DIRECT"
 EOF
 service autofs restart
 
@@ -100,7 +101,7 @@ yum -y install condor
 yum -y install pegasus
 
 # required directories
-mkdir -p /cvmfs
+# mkdir -p /cvmfs
 
 # verification
 ls -l /etc/grid-security/
